@@ -117,7 +117,7 @@
                                     @else
                                         <a href="{{ route('ujian') }}" class="btn btn-success flex-shrink-0 me-lg-2" >Data Ujian</a>
                                     @endif
-                                    <form action="{{ route('logout') }}" method="POST" id="logout-form">
+                                    <form action="{{ route('dashboard') }}" method="POST" id="logout-form">
                                         @csrf
                                         <button type="submit" class="btn btn-danger flex-shrink-0" style="background: rgba(255, 255, 255, 0.2)">Sign Out</button>
                                     </form>
@@ -193,8 +193,8 @@
                                             <td>{{ $activitas->description }}</td>
                                             <td>{{ $activitas->subject_type }}</td>
                                             <td>{{ $activitas->event }}</td>
-                                            <td>{{ $activitas->subject_id }}</td>
-                                            <td>{!! $activitas->properties !!}}</td>
+                                            <td>{{ $activitas->event }}</td>
+                                            <td>{{ $activitas->event }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

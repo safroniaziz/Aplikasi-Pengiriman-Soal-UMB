@@ -117,7 +117,7 @@
                                     @else
                                         <a href="{{ route('ujian') }}" class="btn btn-success flex-shrink-0 me-lg-2" >Data Ujian</a>
                                     @endif
-                                    <form action="{{ route('logout') }}" method="POST" id="logout-form">
+                                    <form action="{{ route('dashboard') }}" method="POST" id="logout-form">
                                         @csrf
                                         <button type="submit" class="btn btn-danger flex-shrink-0" style="background: rgba(255, 255, 255, 0.2)">Sign Out</button>
                                     </form>
@@ -177,26 +177,22 @@
                                 <thead>
                                     <tr class="fs-5 fw-bold text-gray-500 border-bottom-0">
                                         <th>No</th>
-                                        <th>Log Name</th>
-                                        <th>Description</th>
-                                        <th>Subject Type</th>
-                                        <th>Event</th>
-                                        <th>Subject ID</th>
-                                        <th>Properties</th>
+                                        <th></th>
+                                        <th>Email</th>
+                                        <th >Fraksi</th>
+                                        <th>Jabatan</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($aktivitas as $index => $activitas)
+                                    {{-- @foreach ($anggotas as $index => $anggota)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
-                                            <td>{{ $activitas->log_name }}</td>
-                                            <td>{{ $activitas->description }}</td>
-                                            <td>{{ $activitas->subject_type }}</td>
-                                            <td>{{ $activitas->event }}</td>
-                                            <td>{{ $activitas->subject_id }}</td>
-                                            <td>{!! $activitas->properties !!}}</td>
+                                            <td>{{ $anggota->nama_lengkap }}</td>
+                                            <td>{{ $anggota->email }}</td>
+                                            <td>{{ $anggota->fraksi }}</td>
+                                            <td>{{ $anggota->jabatan }}</td>
                                         </tr>
-                                    @endforeach
+                                    @endforeach --}}
                                 </tbody>
                                 <!--end::Table body-->
                             </table>

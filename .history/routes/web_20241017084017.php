@@ -17,15 +17,15 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect()->route('login');
+    return view('welcome');
 });
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         $jumlahProdi = ProgramStudi::count();
         $jumlahDosen = User::where('role','dosen')->count();
-        $aktivitas = DB::table('activity_log')->where('causer_id',Auth::user()->id)->orderBy('created_at','desc')->limit(15)->get();
-        return view('dashboard', compact('jumlahProdi','jumlahDosen','aktivitas'));
+        $aktivitas = DB::table('avtivity_logs')->where('causer_id',Auth::user()->id)->orderBy('created_at','desc')->limit(15)->get();
+        return view('dashboard', compact('jumlahProdi','jumlahDosen'));
     })->middleware(['auth'])->name('dashboard');
 
     Route::middleware([AdminMiddleware::class])->group(function () {
