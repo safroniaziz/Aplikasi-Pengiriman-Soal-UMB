@@ -50,7 +50,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [MataKuliahController::class, 'index'])->name('mataKuliah');
             Route::post('/', [MataKuliahController::class, 'post'])->name('mataKuliah.post');
             Route::get('/{mataKuliah}/edit', [MataKuliahController::class, 'edit'])->name('mataKuliah.edit');
-            Route::patch('/{mataKuliah}', [MataKuliahController::class, 'update'])->name('mataKuliah.update');
+            Route::post('/{mataKuliah}', [MataKuliahController::class, 'update'])->name('mataKuliah.update');
             Route::delete('/{mataKuliah}', [MataKuliahController::class, 'delete'])->name('mataKuliah.delete');
         });
     });

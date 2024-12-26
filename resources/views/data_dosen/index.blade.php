@@ -66,7 +66,7 @@
                                 <td>{{ $dosen->nidn }}</td>
                                 <td>{{ $dosen->nama_lengkap }}</td>
                                 <td>{{ $dosen->email }}</td>
-                                <td>{{ $dosen->prodi->nama_prodi }}</td>
+                                <td>{{ $dosen->prodi ? $dosen->prodi->nama_prodi : '-' }}</td>
                                 <td>
                                     <div class="d-flex gap-2">
                                         <button type="button" class="btn btn-sm btn-primary" onclick="editDosen({{ $dosen->id }})">Edit</button>

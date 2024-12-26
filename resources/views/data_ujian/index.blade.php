@@ -57,7 +57,7 @@
                             <th>Pelaksanaan Ujian</th>
                             <th>Status Ujian</th>
                             <th>Ruangan</th>
-                            <th>Kop Soal Ujian</th>
+                            <th>Template Soal Ujian</th>
                             <th>Batas Upload Soal</th>
                             @if(Auth::user()->role == 'admin')
                             <th>Pengupload</th>
@@ -73,8 +73,8 @@
                         @foreach ($ujians as $index => $ujian)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                <td>{{ $ujian->mataKuliah->kode_mata_kuliah }} - {{ $ujian->mataKuliah->nama_mata_kuliah }}</td>
-                                <td>{{ $ujian->mataKuliah->prodi->nama_prodi }}</td>
+                                <td>{{ $ujian->mataKuliah?->kode_mata_kuliah }} - {{ $ujian->mataKuliah?->nama_mata_kuliah }}</td>
+                                <td>{{ $ujian->mataKuliah?->prodi->nama_prodi }}</td>
                                 <td>
                                     {{ \Carbon\Carbon::parse($ujian->tanggal_dilaksanakan)->format('d-m-Y') }}<br>
                                     {{ \Carbon\Carbon::parse($ujian->waktu_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($ujian->waktu_selesai)->format('H:i') }}
@@ -138,7 +138,7 @@
                                     <td>{{ \Carbon\Carbon::parse($ujian->batas_waktu_upload_soal)->format('d-m-Y H:i') }}</td>
                                 @endif
                                 @if(Auth::user()->role == 'admin')
-                                    <td>{{ $ujian->pengupload->nama_lengkap }}</td>
+                                    <td>{{ $ujian->pengupload ? $ujian->pengupload->nama_lengkap : '' }}</td>
                                 @endif
                                 <td>
                                     @if (Auth::user()->role == "dosen")
@@ -154,7 +154,7 @@
                                             @if ($ujian->kopSoalUjian)
                                                 <button class="btn btn-sm btn-primary" onclick="uploadSoalUjian({{ $ujian->id }})">Upload</button>
                                             @else
-                                                <p class="text-danger">Harap tunggu admin upload kop soal ujian terlebih dahulu</p>
+                                                <p class="text-danger">Harap tunggu admin upload template soal ujian terlebih dahulu</p>
                                             @endif
                                         @else
                                             <button class="btn btn-sm btn-secondary" disabled>Upload Ditutup</button>
@@ -223,11 +223,77 @@
         @include('data_ujian._modal_catatan_kaprodi')
         <!--end::Modal - Customers - Add-->
         <!--end::Modals-->
+        @include('validasi._modal_validasi')
+
     </div>
 @endsection
 
 @push('scripts')
     <script>
+        function validasi(soalUjianId) {
+            // Set nilai soalUjianId di input hidden form
+            $('#soal_ujian_id').val(soalUjianId);
+
+            // Tampilkan modal validasi
+            $('#validasiModal').modal('show');
+        }
+
+        function submitValidasi() {
+            var soalUjianId = $('#soal_ujian_id').val();  // Ambil ID soal ujian dari form
+            var form = document.getElementById('formValidasi');
+
+            if (form) {
+                var formData = new FormData(form);
+
+                $.ajax({
+                    url: '{{ route("validasi.post", ":soal") }}'.replace(':soal', soalUjianId),  // Ganti ':soal' dengan ID soal
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        Swal.fire({
+                            title: "Sukses!",
+                            text: response.message,
+                            icon: "success",
+                            confirmButtonText: "OK"
+                        }).then(() => {
+                            $('#validasiModal').modal('hide');
+                            location.reload();  // Refresh halaman setelah validasi
+                        });
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 422) {  // Status 422 berarti ada error validasi
+                            var errors = xhr.responseJSON.errors;
+                            var errorMessage = '';
+
+                            // Looping melalui error dan tampilkan di SweetAlert
+                            $.each(errors, function(key, value) {
+                                errorMessage += value[0] + '<br>';  // Gabungkan pesan error
+                            });
+
+                            Swal.fire({
+                                title: "Error Validasi!",
+                                html: errorMessage,  // Gunakan HTML untuk menampilkan error line by line
+                                icon: "error",
+                                confirmButtonText: "OK"
+                            });
+                        } else {
+                            // Jika bukan error validasi, tampilkan pesan kesalahan umum
+                            var errorDetail = xhr.responseJSON.error || "Terjadi kesalahan yang tidak diketahui.";
+
+                            Swal.fire({
+                                title: "Error!",
+                                text: xhr.responseJSON.message + ": " + errorDetail,  // Tampilkan pesan error detail dari server
+                                icon: "error",
+                                confirmButtonText: "OK"
+                            });
+                        }
+                    }
+                });
+            }
+        }
+
         function lihatCatatan(catatan) {
             // Masukkan catatan Kaprodi ke dalam elemen modal
             document.getElementById('catatanKaprodiContent').textContent = catatan;
@@ -381,15 +447,15 @@
                 url: '{{ route("ujian.getKopSoal", ":ujian") }}'.replace(':ujian', ujian_id),  // Route untuk mendapatkan data kop soal
                 method: "GET",
                 success: function(response) {
-                    console.log("Data kop soal diterima:", response);  // Debugging
+                    console.log("Data template soal diterima:", response);  // Debugging
                     // Isi form dengan data kop soal yang sudah ada
                     $('#edit_ujian_kop_id').val(response.ujian_id);
                     $('#edit_nama_file').val(response.nama_file);
                     $('#editKopSoalModal').modal('show');
                 },
                 error: function(xhr) {
-                    console.log("Error saat mengambil data kop soal:", xhr);  // Debugging
-                    alert('Terjadi kesalahan saat mengambil data kop soal.');
+                    console.log("Error saat mengambil data template soal:", xhr);  // Debugging
+                    alert('Terjadi kesalahan saat mengambil data template soal.');
                 }
             });
         }
@@ -417,7 +483,7 @@
                 error: function(xhr) {
                     Swal.fire({
                         title: "Error!",
-                        text: "Terjadi kesalahan saat upload kop soal.",
+                        text: "Terjadi kesalahan saat upload template soal.",
                         icon: "error",
                         confirmButtonText: "OK"
                     });
@@ -442,7 +508,7 @@
                 success: function(response) {
                     Swal.fire({
                         title: "Sukses!",
-                        text: "Kop soal berhasil diperbarui.",
+                        text: "Template soal berhasil diperbarui.",
                         icon: "success",
                         confirmButtonText: "OK"
                     }).then(() => {
@@ -451,7 +517,7 @@
                     });
                 },
                 error: function(xhr) {
-                    let errorMessage = "Terjadi kesalahan saat memperbarui kop soal!";
+                    let errorMessage = "Terjadi kesalahan saat memperbarui template soal!";
                     if (xhr.responseJSON && xhr.responseJSON.message) {
                         errorMessage = xhr.responseJSON.message;
                     }
@@ -530,7 +596,7 @@
                     } else {
                         Swal.fire({
                             title: "Error!",
-                            text: "Terjadi kesalahan saat upload kop soal.",
+                            text: "Terjadi kesalahan saat upload template soal.",
                             icon: "error",
                             confirmButtonText: "OK"
                         });

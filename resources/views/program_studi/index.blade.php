@@ -1,6 +1,6 @@
 @extends('layouts.layouts')
 @section('halaman')
-    <li class="breadcrumb-item text-white opacity-75">Dosen</li>
+    <li class="breadcrumb-item text-white opacity-75">Prodi</li>
 @endsection
 @section('content')
     <div class="content flex-row-fluid" id="kt_content">
@@ -16,7 +16,7 @@
                             <span class="path1"></span>
                             <span class="path2"></span>
                         </i>
-                        <input type="text" data-kt-program-studi-table-filter="search" class="form-control form-control-solid w-250px ps-13" placeholder="Cari Dosen" />
+                        <input type="text" data-kt-program-studi-table-filter="search" class="form-control form-control-solid w-250px ps-13" placeholder="Cari Prodi" />
                     </div>
                     <!--end::Search-->
                 </div>
@@ -30,7 +30,7 @@
                         <!--end::Export-->
                         <!--begin::Add customer-->
                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#tambahModal">
-                            Tambah Dosen
+                            Tambah Program Studi
                         </button>
                         <!--end::Add customer-->
                     </div>

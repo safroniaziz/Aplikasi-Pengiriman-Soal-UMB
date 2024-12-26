@@ -150,7 +150,7 @@
                 <th>Prodi</th>
                 <th>Pelaksanaan</th>
                 <th>Status</th>
-                <th>Kop Soal</th>
+                <th>Template Soal</th>
                 <th>Batas Upload Soal</th>
                 <th>Pengupload</th>
                 <th>Soal Ujian</th>
@@ -191,7 +191,7 @@
                         @endif
                     </td>
                     <td>{{ \Carbon\Carbon::parse($ujian->batas_waktu_upload_soal)->format('d-m-Y H:i') }}</td>
-                    <td>{{ $ujian->pengupload->nama_lengkap }}</td>
+                    <td>{{ $ujian->pengupload ? $ujian->pengupload->nama_lengkap : '' }}</td>
                     <td>
                         @if($ujian->soalUjian)
                             Ada

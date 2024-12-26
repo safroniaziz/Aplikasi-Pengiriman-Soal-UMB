@@ -2,7 +2,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="uploadKopSoalModalLabel">Upload Kop Soal Ujian</h5>
+                <h5 class="modal-title" id="uploadtemplateSoalModalLabel">Upload template Soal Ujian</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -14,7 +14,7 @@
                         <input type="text" class="form-control" id="nama_file" name="nama_file" placeholder="Masukkan nama file" required>
                     </div>
                     <div class="mb-3">
-                        <label for="file_kop_soal" class="form-label">Upload Kop Soal</label>
+                        <label for="file_kop_soal" class="form-label">Upload template Soal</label>
                         <input type="file" class="form-control" id="file_kop_soal" name="file_kop_soal" accept=".pdf" required>
                     </div>
                 </form>

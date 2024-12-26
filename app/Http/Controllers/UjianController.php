@@ -151,7 +151,7 @@ class UjianController extends Controller
     public function uploadKopSoal(Request $request, Ujian $ujian) {
         $request->validate([
             'nama_file' => 'required|string|max:255',  // Nama file harus berupa string dan tidak lebih dari 255 karakter
-            'file_kop_soal' => 'required|file|mimes:pdf|max:2048',  // Hanya file PDF dengan ukuran maksimal 2MB
+            'file_kop_soal' => 'required|file|mimes:pdf|max:10000',  // Hanya file PDF dengan ukuran maksimal 2MB
         ]);
 
         // Mendapatkan informasi file yang diupload
@@ -166,23 +166,23 @@ class UjianController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Kop soal berhasil diupload.',
+            'message' => 'template soal berhasil diupload.',
         ], 200);
     }
 
     public function getKopSoal(Ujian $ujian)
     {
-        // Mengambil data kop soal ujian yang terkait dengan ujian ini
+        // Mengambil data template soal ujian yang terkait dengan ujian ini
         $kopSoal = $ujian->kopSoalUjian;
 
-        // Cek apakah kop soal ada
+        // Cek apakah template soal ada
         if (!$kopSoal) {
             return response()->json([
-                'message' => 'Kop soal tidak ditemukan!',
+                'message' => 'template soal tidak ditemukan!',
             ], 404);
         }
 
-        // Mengirimkan data kop soal dalam format JSON
+        // Mengirimkan data template soal dalam format JSON
         return response()->json([
             'ujian_id' => $ujian->id,
             'nama_file' => $kopSoal->nama_file,
@@ -201,7 +201,7 @@ class UjianController extends Controller
 
         if (!$kopSoal) {
             return response()->json([
-                'message' => 'Kop soal tidak ditemukan!',
+                'message' => 'template soal tidak ditemukan!',
             ], 404);
         }
 
@@ -223,7 +223,7 @@ class UjianController extends Controller
         $kopSoal->save();
 
         return response()->json([
-            'message' => 'Kop soal berhasil diupdate.',
+            'message' => 'template soal berhasil diupdate.',
         ], 200);
     }
 
@@ -256,23 +256,23 @@ class UjianController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Kop soal berhasil diupload.',
+            'message' => 'template soal berhasil diupload.',
         ], 200);
     }
 
     public function getSoal(Ujian $ujian)
     {
-        // Mengambil data kop soal ujian yang terkait dengan ujian ini
+        // Mengambil data template soal ujian yang terkait dengan ujian ini
         $soal = $ujian->soalUjian;
 
-        // Cek apakah kop soal ada
+        // Cek apakah template soal ada
         if (!$soal) {
             return response()->json([
                 'message' => 'Soal Ujian tidak ditemukan!',
             ], 404);
         }
 
-        // Mengirimkan data kop soal dalam format JSON
+        // Mengirimkan data template soal dalam format JSON
         return response()->json([
             'ujian_id' => $ujian->id,
             'judul_soal' => $soal->judul_soal,

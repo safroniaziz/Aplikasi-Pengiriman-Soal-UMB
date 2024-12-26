@@ -46,7 +46,6 @@
     function updateMataKuliah() {
         var id = $('#mata_kuliah_id').val();
         var formData = new FormData($('#editForm')[0]);
-        formData.append('_method', 'PATCH');
 
         $.ajax({
             url: "{{ route('mataKuliah.update', ':mataKuliah') }}".replace(':mataKuliah', id),

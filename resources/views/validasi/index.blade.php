@@ -54,7 +54,7 @@
                             <th>Prodi</th>
                             <th>Pelaksanaan</th>
                             <th>Status</th>
-                            <th>Kop Soal</th>
+                            <th>Template Soal</th>
                             <th>Batas Upload Soal</th>
                             <th>Pengupload</th>
                             <th>Soal Ujian</th>
@@ -97,10 +97,11 @@
                                     @endif
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($ujian->batas_waktu_upload_soal)->format('d-m-Y H:i') }}</td>
-                                <td>{{ $ujian->pengupload->nama_lengkap }}</td>
+                                <td>{{ $ujian->pengupload->nama_lengkap ?? 'None' }}</td>
                                 <td>
                                     @if($ujian->soalUjian)
-                                            <a href="{{ Storage::url($ujian->soalUjian->path_file) }}" target="_blank"><i class="fa fa-check-circle"></i>&nbsp; Download {{ $ujian->soalUjian->judul_soal }}</a>
+                                    <a href="{{ Storage::url($ujian->kopSoalUjian->path_file) }}" target="_blank">
+    <i class="fa fa-check-circle"></i>&nbsp; Download {{ $ujian->kopSoalUjian->path_file }}
                                     @else
                                         @if ($now->lessThan($waktuMulai))
                                             <p class="text-warning">Belum Diupload</p>
@@ -121,10 +122,13 @@
                                                     <i class="fa fa-close"></i>&nbsp;<span>Rejected</span>
                                                 </div>
                                             @elseif(!$ujian->soalUjian->validasi)
-                                                <button type="button" class="btn btn-sm btn-primary" onclick="validasi({{ $ujian->soalUjian->id }})">Validasi</button>
+                                            <button type="button" class="btn btn-sm btn-primary" onclick="validasi({{ $ujian->id }})">Validasi</button>
+
+                                                <!-- <button type="button" class="btn btn-sm btn-primary" onclick="validasi"({{ $ujian->soalUjian->id }})">Validasi</button> -->
                                             @endif
                                         @else
-                                            <button type="button" class="btn btn-sm btn-secondary" disabled>Validasi</button>
+                                        <button type="button" class="btn btn-sm btn-secondary" disabled>Validasi</button>
+
                                         @endif
                                     </div>
                                 </td>
@@ -164,6 +168,8 @@
 
                 $.ajax({
                     url: '{{ route("validasi.post", ":soal") }}'.replace(':soal', soalUjianId),  // Ganti ':soal' dengan ID soal
+
+                    // url: '{{ route("validasi.post", ":soal") }}'.replace(':soal', soalUjianId),  // Ganti ':soal' dengan ID soal
                     method: 'POST',
                     data: formData,
                     processData: false,

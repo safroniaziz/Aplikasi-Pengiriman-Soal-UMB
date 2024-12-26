@@ -21,8 +21,10 @@ class ValidasiController extends Controller
         return view('validasi.index', compact('ujians'));
     }
 
-    public function post(Request $request, SoalUjian $soal)
+    public function post(Request $request, $soal)
     {
+        $soal = SoalUjian::where('ujian_id',$soal)->first();
+
         // Validasi input yang diterima dari form
         $validatedData = $request->validate([
             'status' => 'required|in:validated,rejected',  // Hanya menerima status tertentu
@@ -34,7 +36,6 @@ class ValidasiController extends Controller
             'catatan_kaprodi.string' => 'Catatan harus berupa teks.',
             'catatan_kaprodi.max' => 'Catatan tidak boleh lebih dari 255 karakter.',
         ]);
-
         try {
 
             Validasi::create([

@@ -17,7 +17,11 @@
                             <!--begin::Col-->
                             <div class="col-sm-6 mb-10 mb-sm-0">
                                 <!--begin::Image-->
-                                <div class="bgi-no-repeat bgi-position-center bgi-size-cover card-rounded min-h-400px min-h-sm-100 h-100" style="background-size: 100% 100%;background-image:url({{ asset('assets/risalah/assets/media/stock/600x600/img-33.jpg') }})"></div>
+                                <div class="bgi-no-repeat bgi-position-center bgi-size-cover card-rounded min-h-400px min-h-sm-100 h-100" 
+    style="background-size: contain; 
+           background-position: center;
+           background-image: url('{{ asset('assets/risalah/assets/media/stock/600x600/img-33.jpg') }}')">
+</div>
                                 <!--end::Image-->
                             </div>
                             <!--end::Col-->
@@ -41,7 +45,7 @@
                                     <!--begin::Body-->
                                     <div class="mb-6">
                                         <!--begin::Text-->
-                                        <span class="fw-semibold text-gray-600 fs-6 mb-8 d-block">Diajukan sebagai Salah Satu Syarat Skripsi untuk Memperoleh Kelulusan Jenjang Setara Satu pada Program Studi Teknik Informatika</span>
+                                        <span class="fw-semibold text-gray-600 fs-6 mb-8 d-block">Digunakan untuk Mempermudah Pengiriman Soal pada Fakultas Teknik, Universitas Muhammadiyah Bengkulu.</span>
                                         <!--end::Text-->
                                         <!--begin::Stats-->
 
@@ -194,7 +198,7 @@
                                             <td>{{ $activitas->subject_type }}</td>
                                             <td>{{ $activitas->event }}</td>
                                             <td>{{ $activitas->subject_id }}</td>
-                                            <td>{!! $activitas->properties !!}}</td>
+                                            <td>{!! $activitas->properties !!}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
